@@ -7,8 +7,8 @@ This one goes the full way (pointer arithmetic no more!) and provides extended c
 
 # How to run
 ```gcc asciiFluidSimulation.c -o asciiFluidSimulation```
-then run it with one of the provied example .txt files (from Yusuke Endoh) like so:
-```./asciiFluidSimulation < terraces.txt```
+then run it with one of the provied example .txt files (most of them from Yusuke Endoh) like so:
+```./asciiFluidSimulation < ./examples/terraces.txt```
 
 # Example of what it looks like
 
