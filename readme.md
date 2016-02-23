@@ -1,13 +1,13 @@
 # What
 
-The best de-obfuscated version of Yusuke Endoh's "Most complex ASCII fluid" obfuscated-code competition 2012 entry.
+The best de-obfuscated version of Yusuke Endoh's "Most complex ASCII fluid" obfuscated C code competition 2012 entry.
 The original source is here: http://www.ioccc.org/2012/endoh1/hint.html . There are a couple of other de-obfuscated versions online, but they only basically de-macro and break down some constructs.
 
 This one goes the full way (pointer arithmetic no more!) and provides extended commentary on the tecnique used to calculate and render the fluid simulation.
 
 # How to run
 ```gcc asciiFluidSimulation.c -o asciiFluidSimulation```
-then run it with one of the .txt files like so
+then run it with one of the provied example .txt files (from Yusuke Endoh) like so:
 ```./asciiFluidSimulation < terraces.txt```
 
 # Example of what it looks like
