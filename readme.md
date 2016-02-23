@@ -10,7 +10,7 @@ This one goes the full way (pointer arithmetic no more!) and provides extended c
 then run it with one of the provied example .txt files (most of them from Yusuke Endoh) like so:
 ```./asciiFluidSimulation < ./examples/terraces.txt```
 
-# Example of what it looks like
+# Examples
 
 Column:
 <p align="center">
