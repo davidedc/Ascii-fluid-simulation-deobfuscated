@@ -55,7 +55,7 @@ int main(){
 		        // next row, going down the real part increases
 				// rewind the complex part too so particle is at the left
 		        ySandboxAreaScan += 2; //
-		        xSandboxAreaScan = 1; // creal(sandboxAreaScan) + 2 + _Complex_I;
+		        xSandboxAreaScan = -1; // creal(sandboxAreaScan) + 2 + _Complex_I;
 			 	break;
 			case ' ':
 	            // next column, going to the right the complex part decreases
@@ -93,7 +93,7 @@ int main(){
 		}
         // next column, going to the right the complex part decreases
         //sandboxAreaScan = sandboxAreaScan - _Complex_I;
-        xSandboxAreaScan -= 1;
+        xSandboxAreaScan += 1;
  
     }
 
@@ -190,7 +190,7 @@ int main(){
 			// given the position of the particle, determine the screen buffer
 			// position that it's going to be in.
 			//x = particles[PARTICLE particlesCursor _POSITION] * _Complex_I;
-			x = -xPos[particlesCursor];
+			x = xPos[particlesCursor];
 			// y scale correction, since each cell of the input map has
 			// "2" rows in the particle space.
 			//y = particles[PARTICLE particlesCursor _POSITION] / 2;
