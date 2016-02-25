@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <complex.h>
+//#include <complex.h>
 #include <math.h>
 
 //#define _POSITION +0
@@ -19,7 +19,8 @@
 #define CONSOLE_HEIGHT 24
 
 //double complex particles[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2 * 5];
-double complex sandboxAreaScan = 0 /* 0 is top-left */;//, particlesDistance, particlesInteraction;
+//double complex sandboxAreaScan = 0 /* 0 is top-left */;//, particlesDistance, particlesInteraction;
+int xSandboxAreaScan = 0, ySandboxAreaScan = 0;
 double xPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double yPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double density[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
@@ -53,7 +54,8 @@ int main(){
 			case '\n':
 		        // next row, going down the real part increases
 				// rewind the complex part too so particle is at the left
-		        sandboxAreaScan = creal(sandboxAreaScan) + 2 + _Complex_I;
+		        ySandboxAreaScan += 2; //
+		        xSandboxAreaScan = 1; // creal(sandboxAreaScan) + 2 + _Complex_I;
 			 	break;
 			case ' ':
 	            // next column, going to the right the complex part decreases
@@ -76,12 +78,12 @@ int main(){
 			    // higher, or conversely you can get away with simulating a lot less of what goes on in the
 			    // horizontal axis.
         		//particles[PARTICLE particlesCounter _POSITION] = sandboxAreaScan;
-        		xPos[particlesCounter] = cimag(sandboxAreaScan);
-        		yPos[particlesCounter] = creal(sandboxAreaScan);
+        		xPos[particlesCounter] = xSandboxAreaScan;
+        		yPos[particlesCounter] = ySandboxAreaScan;
 
         		//particles[PARTICLE particlesCounter _NEXTPARTICLE _POSITION] = sandboxAreaScan + 1;
-        		xPos[particlesCounter + 1] = cimag(sandboxAreaScan);
-        		yPos[particlesCounter + 1] = creal(sandboxAreaScan) + 1;
+        		xPos[particlesCounter + 1] = xSandboxAreaScan;
+        		yPos[particlesCounter + 1] = ySandboxAreaScan + 1;
 
 
 				// just added two particles
@@ -90,7 +92,8 @@ int main(){
 
 		}
         // next column, going to the right the complex part decreases
-        sandboxAreaScan = sandboxAreaScan - _Complex_I;
+        //sandboxAreaScan = sandboxAreaScan - _Complex_I;
+        xSandboxAreaScan -= 1;
  
     }
 
