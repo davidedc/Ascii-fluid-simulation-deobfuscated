@@ -9,19 +9,21 @@
 #include <math.h>
 
 //#define _POSITION +0
-#define _WALLFLAG +1
+//#define _WALLFLAG +1
 //#define _FORCE +3
 //#define _VELOCITY +4
-#define _NEXTPARTICLE +5
-#define PARTICLE 5*
+//#define _NEXTPARTICLE +5
+//#define PARTICLE 5*
 #define NEXTSCREENROW 80+
 #define CONSOLE_WIDTH 80
 #define CONSOLE_HEIGHT 24
 
-double complex particles[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2 * 5], sandboxAreaScan = 0 /* 0 is top-left */, particlesDistance, particlesInteraction;
+//double complex particles[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2 * 5];
+double complex sandboxAreaScan = 0 /* 0 is top-left */;//, particlesDistance, particlesInteraction;
 double xPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double yPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double density[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+int wallflag[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double xForce[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double yForce[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double xVelocity[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
@@ -60,7 +62,7 @@ int main(){
 				// The character # represents “wall particle” (a particle with fixed position),
 				// and any other non-space characters represent free particles.
 				// A wall sets the flag on 2 particles side by side.
-				particles[PARTICLE particlesCounter _WALLFLAG] = particles[PARTICLE particlesCounter _NEXTPARTICLE _WALLFLAG] = 1;
+				wallflag[particlesCounter] = wallflag[particlesCounter + 1] = 1;
 			default:
         		// Each non-empty character sets the position of two
         		// particles one below the other (real part is rows)
@@ -99,7 +101,7 @@ int main(){
         // Iterate over every pair of particles to calculate the densities
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++){
 			// density of "wall" particles is high, other particles will bounce off them.
-			density[particlesCursor] = particles[PARTICLE particlesCursor _WALLFLAG] * 9;
+			density[particlesCursor] = wallflag[particlesCursor] * 9;
 
 			for (particlesCursor2 = 0; particlesCursor2 < totalOfParticles; particlesCursor2++){
 				//particlesDistance = particles[PARTICLE particlesCursor _POSITION] - particles[PARTICLE particlesCursor2 _POSITION];
@@ -152,7 +154,7 @@ int main(){
 
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++) {
 
-			if (!particles[PARTICLE particlesCursor _WALLFLAG]) {
+			if (!wallflag[particlesCursor]) {
 				
 				// This is the newtonian mechanics part: knowing the force vector acting on each
 				// particle, we accelerate the particle (see the change in velocity).
