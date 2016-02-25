@@ -8,10 +8,10 @@
 #include <complex.h>
 #include <math.h>
 
-#define _POSITION +0
+//#define _POSITION +0
 #define _WALLFLAG +1
-#define _FORCE +3
-#define _VELOCITY +4
+//#define _FORCE +3
+//#define _VELOCITY +4
 #define _NEXTPARTICLE +5
 #define PARTICLE 5*
 #define NEXTSCREENROW 80+
@@ -22,6 +22,11 @@ double complex particles[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2 * 5], sandboxAreaSca
 double xPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double yPos[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
 double density[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+double xForce[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+double yForce[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+double xVelocity[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+double yVelocity[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2];
+double xParticleDistance, yParticleDistance;
 double particlesInteractionD;
 double particlesDistanceD;
 
@@ -68,11 +73,11 @@ int main(){
 			    // I think this is because of gravity simulation, the vertical resolution has to be
 			    // higher, or conversely you can get away with simulating a lot less of what goes on in the
 			    // horizontal axis.
-        		particles[PARTICLE particlesCounter _POSITION] = sandboxAreaScan;
+        		//particles[PARTICLE particlesCounter _POSITION] = sandboxAreaScan;
         		xPos[particlesCounter] = cimag(sandboxAreaScan);
         		yPos[particlesCounter] = creal(sandboxAreaScan);
 
-        		particles[PARTICLE particlesCounter _NEXTPARTICLE _POSITION] = sandboxAreaScan + 1;
+        		//particles[PARTICLE particlesCounter _NEXTPARTICLE _POSITION] = sandboxAreaScan + 1;
         		xPos[particlesCounter + 1] = cimag(sandboxAreaScan);
         		yPos[particlesCounter + 1] = creal(sandboxAreaScan) + 1;
 
@@ -116,15 +121,24 @@ int main(){
 
         // Iterate over every pair of particles to calculate the forces
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++){
-			particles[PARTICLE particlesCursor _FORCE] = gravity;
+			//particles[PARTICLE particlesCursor _FORCE] = gravity;
+			yForce[particlesCursor] = gravity;
+			xForce[particlesCursor] = 0;
 
 			for (particlesCursor2 = 0; particlesCursor2 < totalOfParticles; particlesCursor2++){
-				particlesDistance = particles[PARTICLE particlesCursor _POSITION] - particles[PARTICLE particlesCursor2 _POSITION];
-				particlesInteraction = cabs(particlesDistance) / 2 - 1;
+				//particlesDistance = particles[PARTICLE particlesCursor _POSITION] - particles[PARTICLE particlesCursor2 _POSITION];
+				xParticleDistance = xPos[particlesCursor] - xPos[particlesCursor2];
+				yParticleDistance = yPos[particlesCursor] - yPos[particlesCursor2];
+				particlesDistanceD = sqrt( pow(xParticleDistance,2.0) + pow(yParticleDistance,2.0));
+				particlesInteractionD = particlesDistanceD / 2.0 - 1.0;
 				// force is updated only if particles are close enough
-				if (floor(1.0 - creal(particlesInteraction)) > 0){
-					particles[PARTICLE particlesCursor _FORCE] += particlesInteraction * (particlesDistance * (3 - density[particlesCursor] - density[particlesCursor2]) * pressure + particles[PARTICLE particlesCursor _VELOCITY] *
-					  viscosity - particles[PARTICLE particlesCursor2 _VELOCITY] * viscosity) / density[particlesCursor];
+				if (floor(1.0 - particlesInteractionD) > 0){
+					//particles[PARTICLE particlesCursor _FORCE] += particlesInteractionD * (particlesDistance * (3 - density[particlesCursor] - density[particlesCursor2]) * pressure + particles[PARTICLE particlesCursor _VELOCITY] *
+					//  viscosity - particles[PARTICLE particlesCursor2 _VELOCITY] * viscosity) / density[particlesCursor];
+					xForce[particlesCursor] += particlesInteractionD * (xParticleDistance * (3 - density[particlesCursor] - density[particlesCursor2]) * pressure + xVelocity[particlesCursor] *
+					  viscosity - xVelocity[particlesCursor2] * viscosity) / density[particlesCursor];
+					yForce[particlesCursor] += particlesInteractionD * (yParticleDistance * (3 - density[particlesCursor] - density[particlesCursor2]) * pressure + yVelocity[particlesCursor] *
+					  viscosity - yVelocity[particlesCursor2] * viscosity) / density[particlesCursor];
                 }
             }
         }
@@ -147,24 +161,35 @@ int main(){
 				// acceleration is proportional to the force.
 
 				// force affects velocity
-				if (cabs(particles[PARTICLE particlesCursor _FORCE]) < 4.2)
-					particles[PARTICLE particlesCursor _VELOCITY] += particles[PARTICLE particlesCursor _FORCE] / 10;
-				else
-					particles[PARTICLE particlesCursor _VELOCITY] += particles[PARTICLE particlesCursor _FORCE] / 11;
+				//if (cabs(particles[PARTICLE particlesCursor _FORCE]) < 4.2) {
+				if ( sqrt( pow(xForce[particlesCursor] ,2.0) + pow(yForce[particlesCursor],2.0)) < 4.2) {
+					//particles[PARTICLE particlesCursor _VELOCITY] += particles[PARTICLE particlesCursor _FORCE] / 10;
+					xVelocity[particlesCursor] += xForce[particlesCursor] / 10;
+					yVelocity[particlesCursor] += yForce[particlesCursor] / 10;
+				}
+				else {
+				//	particles[PARTICLE particlesCursor _VELOCITY] += particles[PARTICLE particlesCursor _FORCE] / 11;
+					xVelocity[particlesCursor] += xForce[particlesCursor] / 11;
+					yVelocity[particlesCursor] += yForce[particlesCursor] / 11;
+				}
 
 				// velocity affects position
-				particles[PARTICLE particlesCursor _POSITION] += particles[PARTICLE particlesCursor _VELOCITY];
-				xPos[particlesCursor] += cimag(particles[PARTICLE particlesCursor _VELOCITY]);
-				yPos[particlesCursor] += creal(particles[PARTICLE particlesCursor _VELOCITY]);
+				//particles[PARTICLE particlesCursor _POSITION] += particles[PARTICLE particlesCursor _VELOCITY];
+				//xPos[particlesCursor] += cimag(particles[PARTICLE particlesCursor _VELOCITY]);
+				//yPos[particlesCursor] += creal(particles[PARTICLE particlesCursor _VELOCITY]);
+				xPos[particlesCursor] += xVelocity[particlesCursor];
+				yPos[particlesCursor] += yVelocity[particlesCursor];
 			}
 
 
 			// given the position of the particle, determine the screen buffer
 			// position that it's going to be in.
-			x = particles[PARTICLE particlesCursor _POSITION] * _Complex_I;
+			//x = particles[PARTICLE particlesCursor _POSITION] * _Complex_I;
+			x = -xPos[particlesCursor];
 			// y scale correction, since each cell of the input map has
 			// "2" rows in the particle space.
-			y = particles[PARTICLE particlesCursor _POSITION] / 2;
+			//y = particles[PARTICLE particlesCursor _POSITION] / 2;
+			y = yPos[particlesCursor]/2;
 			screenBufferIndex = x + CONSOLE_WIDTH * y;
 
 
