@@ -45,7 +45,6 @@ int main(){
 		        sandboxAreaScan = creal(sandboxAreaScan) + 2 + _Complex_I;
 			 	break;
 			case ' ':
-	            // next column, going to the right the complex part decreases
 				break;
 			case '#':
 				// The character # represents “wall particle” (a particle with fixed position),
@@ -68,7 +67,7 @@ int main(){
         		particles[PARTICLE particlesCounter _NEXTPARTICLE _POSITION] = sandboxAreaScan + 1;
 
 
-				// just added two particles
+				// we just added two particles
 				totalOfParticles = particlesCounter += 2;
 
 
