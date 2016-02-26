@@ -4,7 +4,9 @@ The best de-obfuscated versions of Yusuke Endoh's "Most complex ASCII fluid" obf
 The original source is here: http://www.ioccc.org/2012/endoh1/hint.html . There are a couple of other de-obfuscated versions online, but they only basically de-macro and break down some constructs.
 
 These ones go the full way. There are two versions:
+
 1. version preserving complex numbers. Removes all pointer arithmetics and provides extended commentary on the tecnique used to calculate and render the fluid simulation.
+
 2. same as 1 but also removes all use of complex numbers, just uses standard doubles instead (using complex numbers for vectors is clever and compact but convoluted.)
 
 # How to run
