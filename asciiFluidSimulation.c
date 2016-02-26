@@ -200,7 +200,7 @@ int main(){
 				screenBuffer[screenBufferIndex+1] |= 4; // set 3rd bit to 1
 				// now the cell in row below
 				screenBuffer[NEXTSCREENROW screenBufferIndex]   |= 2; // set 2nd bit to 1
-				screenBuffer[NEXTSCREENROW screenBufferIndex+1]  = 1; // set 1st bit to 1
+				screenBuffer[NEXTSCREENROW screenBufferIndex+1] |= 1; // set 1st bit to 1
 			}
 			
         }
