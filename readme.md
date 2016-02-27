@@ -18,7 +18,7 @@ then run it with one of the provied example .txt files (most of them from Yusuke
 
 ```./asciiFluidSimulation < ./examples/terraces.txt```
 
-(P.S. add the ```-O3``` switch to really speed up the simulation)
+P.S. add the ```-O3``` flag when compiling (```gcc -O3 ...```) to really speed up the simulation.
 
 # Examples
 
