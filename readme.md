@@ -13,8 +13,12 @@ These ones go the full way. There are two versions:
 
 # How to run
 ```gcc asciiFluidSimulation.c -o asciiFluidSimulation```
+
 then run it with one of the provied example .txt files (most of them from Yusuke Endoh) like so:
+
 ```./asciiFluidSimulation < ./examples/terraces.txt```
+
+(P.S. add the ```-O3``` switch to really speed up the simulation)
 
 # Examples
 
