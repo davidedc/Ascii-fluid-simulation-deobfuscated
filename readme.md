@@ -5,9 +5,11 @@ The original source is here: http://www.ioccc.org/2012/endoh1/hint.html . There 
 
 These ones go the full way. There are two versions:
 
-1. version preserving complex numbers. Removes all pointer arithmetics and provides extended commentary on the tecnique used to calculate and render the fluid simulation.
+1. "asciiFluidSimulation". Preserves the "simgle array of complex numbers" approach. Removes all pointer arithmetics and provides extended commentary on the tecnique used to calculate and render the fluid simulation.
 
-2. same as 1 but also removes all use of complex numbers, just uses standard doubles instead (using complex numbers for vectors is clever and compact but convoluted.)
+2. "asciiFluidSimulationWithoutComplexNumbers". Same as 1 but also removes all use of complex numbers, just uses standard doubles instead (using complex numbers for vectors is clever and compact but convoluted), and separate arrays are used for each data field of particles.
+
+3. "asciiFluidSimulationWithStructsWithoutComplexNumbers". Same as 2 but particles data are now cleanly put into a struct.
 
 # How to run
 ```gcc asciiFluidSimulation.c -o asciiFluidSimulation```
