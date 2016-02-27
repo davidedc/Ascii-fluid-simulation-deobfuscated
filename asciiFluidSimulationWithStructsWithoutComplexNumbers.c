@@ -22,7 +22,7 @@ struct Particle {
 	double yForce;
 	double xVelocity;
 	double yVelocity;
-} particle[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2]; 
+} particles[CONSOLE_WIDTH * CONSOLE_HEIGHT * 2]; 
 
 double xParticleDistance, yParticleDistance;
 double particlesInteraction;
@@ -59,7 +59,7 @@ int main(){
 				// The character # represents “wall particle” (a particle with fixed position),
 				// and any other non-space characters represent free particles.
 				// A wall sets the flag on 2 particles side by side.
-				particle[particlesCounter].wallflag = particle[particlesCounter + 1].wallflag = 1;
+				particles[particlesCounter].wallflag = particles[particlesCounter + 1].wallflag = 1;
 			default:
         		// Each non-empty character sets the position of two
         		// particles one below the other (real part is rows)
@@ -72,11 +72,11 @@ int main(){
 			    // I think this is because of gravity simulation, the vertical resolution has to be
 			    // higher, or conversely you can get away with simulating a lot less of what goes on in the
 			    // horizontal axis.
-        		particle[particlesCounter].xPos = xSandboxAreaScan;
-        		particle[particlesCounter].yPos = ySandboxAreaScan;
+        		particles[particlesCounter].xPos = xSandboxAreaScan;
+        		particles[particlesCounter].yPos = ySandboxAreaScan;
 
-        		particle[particlesCounter + 1].xPos = xSandboxAreaScan;
-        		particle[particlesCounter + 1].yPos = ySandboxAreaScan + 1;
+        		particles[particlesCounter + 1].xPos = xSandboxAreaScan;
+        		particles[particlesCounter + 1].yPos = ySandboxAreaScan + 1;
 
 				// we just added two particles
 				totalOfParticles = particlesCounter += 2;
@@ -95,12 +95,12 @@ int main(){
         // Iterate over every pair of particles to calculate the densities
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++){
 			// density of "wall" particles is high, other particles will bounce off them.
-			particle[particlesCursor].density = particle[particlesCursor].wallflag * 9;
+			particles[particlesCursor].density = particles[particlesCursor].wallflag * 9;
 
 			for (particlesCursor2 = 0; particlesCursor2 < totalOfParticles; particlesCursor2++){
 
-				xParticleDistance = particle[particlesCursor].xPos - particle[particlesCursor2].xPos;
-				yParticleDistance = particle[particlesCursor].yPos - particle[particlesCursor2].yPos;
+				xParticleDistance = particles[particlesCursor].xPos - particles[particlesCursor2].xPos;
+				yParticleDistance = particles[particlesCursor].yPos - particles[particlesCursor2].yPos;
 				particlesDistance = sqrt( pow(xParticleDistance,2.0) + pow(yParticleDistance,2.0));
 				particlesInteraction = particlesDistance / 2.0 - 1.0;
 
@@ -110,29 +110,29 @@ int main(){
 				//if (round(creal(particlesInteraction)) < 1){
 				// density is updated only if particles are close enough
 				if (floor(1.0 - particlesInteraction) > 0){
-					particle[particlesCursor].density += particlesInteraction * particlesInteraction;
+					particles[particlesCursor].density += particlesInteraction * particlesInteraction;
                 }
             }
         }
 
         // Iterate over every pair of particles to calculate the forces
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++){
-			particle[particlesCursor].yForce = gravity;
-			particle[particlesCursor].xForce = 0;
+			particles[particlesCursor].yForce = gravity;
+			particles[particlesCursor].xForce = 0;
 
 			for (particlesCursor2 = 0; particlesCursor2 < totalOfParticles; particlesCursor2++){
 
-				xParticleDistance = particle[particlesCursor].xPos - particle[particlesCursor2].xPos;
-				yParticleDistance = particle[particlesCursor].yPos - particle[particlesCursor2].yPos;
+				xParticleDistance = particles[particlesCursor].xPos - particles[particlesCursor2].xPos;
+				yParticleDistance = particles[particlesCursor].yPos - particles[particlesCursor2].yPos;
 				particlesDistance = sqrt( pow(xParticleDistance,2.0) + pow(yParticleDistance,2.0));
 				particlesInteraction = particlesDistance / 2.0 - 1.0;
 
 				// force is updated only if particles are close enough
 				if (floor(1.0 - particlesInteraction) > 0){
-					particle[particlesCursor].xForce += particlesInteraction * (xParticleDistance * (3 - particle[particlesCursor].density - particle[particlesCursor2].density) * pressure + particle[particlesCursor].xVelocity *
-					  viscosity - particle[particlesCursor2].xVelocity * viscosity) / particle[particlesCursor].density;
-					particle[particlesCursor].yForce += particlesInteraction * (yParticleDistance * (3 - particle[particlesCursor].density - particle[particlesCursor2].density) * pressure + particle[particlesCursor].yVelocity *
-					  viscosity - particle[particlesCursor2].yVelocity * viscosity) / particle[particlesCursor].density;
+					particles[particlesCursor].xForce += particlesInteraction * (xParticleDistance * (3 - particles[particlesCursor].density - particles[particlesCursor2].density) * pressure + particles[particlesCursor].xVelocity *
+					  viscosity - particles[particlesCursor2].xVelocity * viscosity) / particles[particlesCursor].density;
+					particles[particlesCursor].yForce += particlesInteraction * (yParticleDistance * (3 - particles[particlesCursor].density - particles[particlesCursor2].density) * pressure + particles[particlesCursor].yVelocity *
+					  viscosity - particles[particlesCursor2].yVelocity * viscosity) / particles[particlesCursor].density;
                 }
             }
         }
@@ -146,7 +146,7 @@ int main(){
 
 		for (particlesCursor = 0; particlesCursor < totalOfParticles; particlesCursor++) {
 
-			if (!particle[particlesCursor].wallflag) {
+			if (!particles[particlesCursor].wallflag) {
 				
 				// This is the newtonian mechanics part: knowing the force vector acting on each
 				// particle, we accelerate the particle (see the change in velocity).
@@ -155,27 +155,27 @@ int main(){
 				// acceleration is proportional to the force.
 
 				// force affects velocity
-				if ( sqrt( pow(particle[particlesCursor].xForce ,2.0) + pow(particle[particlesCursor].yForce,2.0)) < 4.2) {
-					particle[particlesCursor].xVelocity += particle[particlesCursor].xForce / 10;
-					particle[particlesCursor].yVelocity += particle[particlesCursor].yForce / 10;
+				if ( sqrt( pow(particles[particlesCursor].xForce ,2.0) + pow(particles[particlesCursor].yForce,2.0)) < 4.2) {
+					particles[particlesCursor].xVelocity += particles[particlesCursor].xForce / 10;
+					particles[particlesCursor].yVelocity += particles[particlesCursor].yForce / 10;
 				}
 				else {
-					particle[particlesCursor].xVelocity += particle[particlesCursor].xForce / 11;
-					particle[particlesCursor].yVelocity += particle[particlesCursor].yForce / 11;
+					particles[particlesCursor].xVelocity += particles[particlesCursor].xForce / 11;
+					particles[particlesCursor].yVelocity += particles[particlesCursor].yForce / 11;
 				}
 
 				// velocity affects position
-				particle[particlesCursor].xPos += particle[particlesCursor].xVelocity;
-				particle[particlesCursor].yPos += particle[particlesCursor].yVelocity;
+				particles[particlesCursor].xPos += particles[particlesCursor].xVelocity;
+				particles[particlesCursor].yPos += particles[particlesCursor].yVelocity;
 			}
 
 
 			// given the position of the particle, determine the screen buffer
 			// position that it's going to be in.
-			x = particle[particlesCursor].xPos;
+			x = particles[particlesCursor].xPos;
 			// y scale correction, since each cell of the input map has
 			// "2" rows in the particle space.
-			y = particle[particlesCursor].yPos/2;
+			y = particles[particlesCursor].yPos/2;
 			screenBufferIndex = x + CONSOLE_WIDTH * y;
 
 
