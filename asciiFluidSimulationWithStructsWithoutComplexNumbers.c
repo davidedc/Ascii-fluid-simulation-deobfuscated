@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <math.h>
 
-#define NEXTSCREENROW 80+
 #define CONSOLE_WIDTH 80
 #define CONSOLE_HEIGHT 24
 
@@ -226,8 +225,8 @@ int main(){
 				screenBuffer[screenBufferIndex]   |= 8; // set 4th bit to 1
 				screenBuffer[screenBufferIndex+1] |= 4; // set 3rd bit to 1
 				// now the cell in row below
-				screenBuffer[NEXTSCREENROW screenBufferIndex]   |= 2; // set 2nd bit to 1
-				screenBuffer[NEXTSCREENROW screenBufferIndex+1] |= 1; // set 1st bit to 1
+				screenBuffer[screenBufferIndex + CONSOLE_WIDTH]   |= 2; // set 2nd bit to 1
+				screenBuffer[screenBufferIndex + CONSOLE_WIDTH + 1] |= 1; // set 1st bit to 1
 			}
 			
         }
