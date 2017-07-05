@@ -43,3 +43,17 @@ Clock:
 <p align="center">
   <img src="https://raw.githubusercontent.com/davidedc/Ascii-fluid-simulation-deobfuscated/master/readme-images/clock.gif">
 </p>
+
+# How does it work?
+
+...it uses a version of the "smoothed-particle hydrodynamics" (SPC) method.
+
+Briefly: each particle has an associated velocity vector. At each step, the system calculates the "density" of each particicle (a scalar). Then it calculates the total force (due to gravity, the distance from and the density of all the other particles). Finally, it modifies the velocity of each particle due to the calculated resulting force, and updates its position according to the velocity.
+
+More in depth:
+
+It first calculates the "density" of each particle, which is just a number (a scalar). The density of each particle is calculated by checking how close it is to each other particles, and it gives a sense of how "compressed" the particle is. For example a particle in the middle of a cluster of particles has high density, while a particle on the edge has low density. The density is useful because it measures how much a particle is free to move. So a force applied to a low-density particle will move it much more than the same force applied to a high-density particle.
+
+Next, it calculates the actual force to be applied to each particle. The total force on a particle is a vector that adds the gravity to a repulsion force from each other particle (particles tend to "spread away" from each other). The force between two particles is affected by their distance and their densities.
+
+Then, it calculates the new velocity and the new position of each particle based on the force vector.
