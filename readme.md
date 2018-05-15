@@ -46,7 +46,7 @@ Clock:
 
 # How does it work?
 
-...it uses a version of the "smoothed-particle hydrodynamics" (SPC) method.
+...it uses a version of the "Smoothed-Particle Hydrodynamics" (SPH) method.
 
 Briefly: each particle has an associated velocity vector. At each step, the system calculates the "density" of each particicle (a scalar). Then it calculates the total force (due to gravity, the distance from and the density of all the other particles). Finally, it modifies the velocity of each particle due to the calculated resulting force, and updates its position according to the velocity.
 
